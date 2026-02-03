@@ -42,8 +42,8 @@ function createPlayer(name, marker) {
 }
 
 const GameController = (function () {
-    const playerOne = createPlayer("Player 1", "x");
-    const playerTwo = createPlayer("Player 2", "o");
+    const playerOne = createPlayer("Player 1", "X");
+    const playerTwo = createPlayer("Player 2", "O");
     const winPos = [
         [[0, 0], [0, 1], [0, 2]],
         [[1, 0], [1, 1], [1, 2]],

@@ -66,4 +66,22 @@ button {
 
 .board-container {
   border: 1px black solid;
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+.board-container > div {
+  border: 1px black solid;
+  display: grid;
+  align-items: center;
+  font-size: 100px;
+}
+
+.marker {
+  font-size: 50px;
+  margin: 0 auto;
+}
+
+.game-message {
+  margin-top: 0.5rem;
 }

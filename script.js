@@ -103,3 +103,59 @@ const GameController = (function () {
 
     return { makeMove, checkWinner, resetGame, playerOne, playerTwo, getTurn }
 })();
+
+const DisplayController = (function () {
+    const boardContainer = document.querySelector(".board-container");
+    const playerOneName = document.querySelector(".player-one-name");
+    const playerTwoName = document.querySelector(".player-two-name");
+    const gameMessage = document.querySelector(".game-message");
+    const resetButton = document.querySelector("#reset");
+
+    function renderGame() {
+        GameController.resetGame();
+        boardContainer.textContent = "";
+        const board = GameBoard.getBoard();
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                const grid = document.createElement("div");
+                grid.setAttribute("id", `${i}-${j}`);
+                grid.textContent = board[i][j];
+                boardContainer.appendChild(grid);
+            }
+        }
+        playerOneName.textContent = GameController.playerOne.name;
+        playerTwoName.textContent = GameController.playerTwo.name;
+
+        gameMessage.textContent = `${GameController.playerOne.name}'s Turn`;
+    }
+
+    boardContainer.addEventListener("click", e => {
+        const id = e.target.id;
+        const i = id.at(0);
+        const j = id.at(-1);
+        const isOver = GameController.makeMove(i, j);
+        e.target.textContent = GameBoard.getBoard()[i][j];
+        switch(isOver) {
+            case 1:
+                gameMessage.textContent = `${GameController.playerOne.name} Wins!`;
+                break;
+            case 2:
+                gameMessage.textContent = `${GameController.playerTwo.name} Wins!`;
+                break;
+            case 3:
+                gameMessage.textContent = "Tie!";
+                break;
+            case 0:
+                gameMessage.textContent = GameController.getTurn() ? `${GameController.playerOne.name}'s Turn` : `${GameController.playerTwo.name}'s Turn`;
+                break;
+        }
+    });
+
+    resetButton.addEventListener("click", () => {
+        renderGame();
+    });
+
+    return { renderGame };
+})();
+
+DisplayController.renderGame();

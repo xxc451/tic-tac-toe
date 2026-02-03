@@ -26,5 +26,66 @@ const GameBoard = (function () {
         numPlaced = 0;
     }
 
-    return { getBoard, putMarker, resetBoard };
+    return { getBoard, putMarker, resetBoard, numPlaced };
+})();
+
+function createPlayer(name, marker) {
+    return { name, marker }
+}
+
+const GameController = (function () {
+    const playerOne = createPlayer("Player 1", "x");
+    const playerTwo = createPlayer("Player 2", "o");
+    const winPos = [
+        [[0, 0], [0, 1], [0, 2]],
+        [[1, 0], [1, 1], [1, 2]],
+        [[2, 0], [2, 1], [2, 2]],
+        [[0, 0], [1, 0], [2, 0]],
+        [[0, 1], [1, 1], [2, 1]],
+        [[0, 2], [1, 2], [2, 2]],
+        [[0, 0], [1, 1], [2, 2]],
+        [[2, 0], [1, 1], [0, 2]]
+    ]
+    let playerOneTurn = true;
+    let gameOver = false;
+
+    function makeMove(x, y) {
+        if (!gameOver) {
+            GameBoard.numPlaced++;
+            if (playerOneTurn) {
+                GameBoard.putMarker(x, y, playerOne.marker);
+            } else {
+                GameBoard.putMarker(x, y, playerTwo.marker);
+            }
+            playerOneTurn = !playerOneTurn;
+            return checkWinner();
+        }
+    }
+
+    function checkWinner() {
+        const board = GameBoard.getBoard()
+        for (let i = 0; i < winPos.length; i++) {
+            if (board[winPos[i][0][0]][winPos[i][0][1]] === board[winPos[i][1][0]][winPos[i][1][1]] && 
+                board[winPos[i][0][0]][winPos[i][0][1]] === board[winPos[i][2][0]][winPos[i][2][1]] && 
+                board[winPos[i][0][0]][winPos[i][0][1]] !== null) {
+                    gameOver = true;
+                    return playerOne.marker === board[winPos[i][0][0]][winPos[i][0][1]] ? 1 : 2;
+            }
+        }
+        if (GameBoard.numPlaced === 9) {
+            gameOver = true;
+            return 3;
+        } else {
+            return 0;
+        }
+    }
+
+    function resetGame() {
+        playerOneTurn = true;
+        gameOver = false;
+        GameBoard.resetBoard();
+        GameBoard.numPlaced = 0;
+    }
+
+    return { makeMove, checkWinner, resetGame }
 })();

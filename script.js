@@ -52,13 +52,16 @@ const GameController = (function () {
     function makeMove(x, y) {
         if (!gameOver) {
             GameBoard.numPlaced++;
+            let success = false;
             if (playerOneTurn) {
-                GameBoard.putMarker(x, y, playerOne.marker);
+                success = GameBoard.putMarker(x, y, playerOne.marker);
             } else {
-                GameBoard.putMarker(x, y, playerTwo.marker);
+                success = GameBoard.putMarker(x, y, playerTwo.marker);
             }
-            playerOneTurn = !playerOneTurn;
-            return checkWinner();
+            if (success) {
+                playerOneTurn = !playerOneTurn;
+                return checkWinner();
+            }
         }
     }
 

@@ -26,7 +26,15 @@ const GameBoard = (function () {
         numPlaced = 0;
     }
 
-    return { getBoard, putMarker, resetBoard, numPlaced };
+    function getNumPlaced() {
+        return numPlaced;
+    }
+
+    function setNumPlaced(n) {
+        numPlaced = n;
+    }
+
+    return { getBoard, putMarker, resetBoard, getNumPlaced, setNumPlaced };
 })();
 
 function createPlayer(name, marker) {
@@ -51,7 +59,6 @@ const GameController = (function () {
 
     function makeMove(x, y) {
         if (!gameOver) {
-            GameBoard.numPlaced++;
             let success = false;
             if (playerOneTurn) {
                 success = GameBoard.putMarker(x, y, playerOne.marker);
@@ -75,7 +82,7 @@ const GameController = (function () {
                     return playerOne.marker === board[winPos[i][0][0]][winPos[i][0][1]] ? 1 : 2;
             }
         }
-        if (GameBoard.numPlaced === 9) {
+        if (GameBoard.getNumPlaced() === 9) {
             gameOver = true;
             return 3;
         } else {
@@ -87,8 +94,12 @@ const GameController = (function () {
         playerOneTurn = true;
         gameOver = false;
         GameBoard.resetBoard();
-        GameBoard.numPlaced = 0;
+        GameBoard.setNumPlaced(0);
     }
 
-    return { makeMove, checkWinner, resetGame }
+    function getTurn() {
+        return playerOneTurn;
+    }
+
+    return { makeMove, checkWinner, resetGame, playerOne, playerTwo, getTurn }
 })();

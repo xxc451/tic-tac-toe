@@ -110,6 +110,11 @@ const DisplayController = (function () {
     const playerTwoName = document.querySelector(".player-two-name");
     const gameMessage = document.querySelector(".game-message");
     const resetButton = document.querySelector("#reset");
+    const dialog = document.querySelector("dialog");
+    const playerOneButton = document.querySelector("#one");
+    const playerTwoButton = document.querySelector("#two");
+    const form = document.querySelector("form");
+    const formButton = document.querySelector("form button");
 
     function renderGame() {
         GameController.resetGame();
@@ -152,6 +157,28 @@ const DisplayController = (function () {
     });
 
     resetButton.addEventListener("click", () => {
+        renderGame();
+    });
+
+    playerOneButton.addEventListener("click", () => {
+        form.reset()
+        form.setAttribute("id", "for-one");
+        dialog.showModal();
+    });
+
+    playerTwoButton.addEventListener("click", () => {
+        form.reset()
+        form.setAttribute("id", "for-two");
+        dialog.showModal();
+    });
+
+    formButton.addEventListener("click", e => {
+        const formData = new FormData(form);
+        if (form.id === "for-one") {
+            GameController.playerOne.name = formData.get("name");
+        } else {
+            GameController.playerTwo.name = formData.get("name");
+        }
         renderGame();
     });
 

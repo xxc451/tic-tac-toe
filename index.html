@@ -16,13 +16,22 @@
         <div class="player-one">
             <h3 class="player-one-name">Player 1</h3>
             <div class="marker">X</div>
+            <button id="one">Change Name</button>
         </div>
         <div class="board-container"></div>
         <div class="player-two">
             <h3 class="player-two-name">Player 2</h3>
             <div class="marker">O</div>
+            <button id="two">Change Name</button>
         </div>
     </div>
     <p class="game-message"></p>
+    <dialog closedby="any">
+        <form action="" method="dialog">
+            <label for="name">Name: </label>
+            <input type="text" name="name" id="name">
+            <button>Change</button>
+        </form>
+    </dialog>
 </body>
 </html>
